@@ -46,6 +46,9 @@
       .layout {
         display: flex;
         gap: 16px;
+        width: 80%;
+        margin-right:auto;
+        margin-left:auto;
       }
 
     </style>
@@ -62,15 +65,14 @@
       <progress value="0" max="100" id="progress" hidden=1></progress>  
     </div>
     
-    <hr/>
     <section class="layout">
       <label for="fileInput">Choose a *.cgi file: </label>
       <div><input type="file" id="fileInput"></div>
     </section>
-    <hr/>
+    
     <section class="layout">
       
-      <div><button onclick="readFile()">Export To FBX</button></div>
+      <div><p></p><button onclick="readFile()">Export To FBX</button></div>
       <div><p>Start Time Code: </p><input type="time" id="startTimeCode" step="01.0" value="00:00:00"></div>
       <div><p>End Time Code: </p><input type="time" id="endTimeCode" step="01.0" value="00:00:00"></div>
     </section>
