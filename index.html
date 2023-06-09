@@ -43,22 +43,44 @@
         to {transform: rotate(360deg);}
       }
 
+      .layout {
+        display: flex;
+        gap: 16px;
+      }
+
     </style>
   </head>
   <body>
     <hr/>
-    <strong>Technocrane Trimmer</strong>
-    <figure style="overflow:visible;" id="spinner"><div class="spinner"></div><center style="margin-top:0.5em"><strong>emscripten</strong></center></figure>
+    
+    <center style="margin-top:3.5em"><img src="technocrane.png" alt="Technocrane" style="width:535px;height:93px;"></center>
+    <br/>
+    <center style="margin-top:.5em"><strong>Trim and export your raw *.cgi stream into *.fbx file</strong></center>
+    <figure style="overflow:visible;" id="spinner"><div class="spinner"></div><center style="margin-top:0.5em"><strong>Processing Module</strong></center></figure>
     <div class="emscripten" id="status">Downloading...</div>
     <div class="emscripten">
       <progress value="0" max="100" id="progress" hidden=1></progress>  
     </div>
     
     <hr/>
+    <section class="layout">
+      <label for="fileInput">Choose a *.cgi file: </label>
+      <div><input type="file" id="fileInput"></div>
+    </section>
+    <hr/>
+    <section class="layout">
+      
+      <div><button onclick="readFile()">Export To FBX</button></div>
+      <div><p>Start Time Code: </p><input type="time" id="startTimeCode" step="01.0" value="00:00:00"></div>
+      <div><p>End Time Code: </p><input type="time" id="endTimeCode" step="01.0" value="00:00:00"></div>
+    </section>
+    
+    
+    <br/>
+    <div/>
     <textarea class="emscripten" id="output" rows="8"></textarea>
     <hr>
-    <input type="file" id="fileInput">
-    <button onclick="readFile()">Read File</button>
+    
     <script type='text/javascript'>
       var statusElement = document.getElementById('status');
       var progressElement = document.getElementById('progress');
