@@ -1,0 +1,59 @@
+<p>Trimmer Service - <a href="index.html">Home Page</a></p>
+
+<p>Technocrane trimmer is a service that converts raw stream information (*.cgi) into fbx files. Its main feature is the ability to export a defined range of time to fbx. This allows for the splitting of large daily streams into smaller fbx files, which can be imported into DCC applications like Maya, MotionBuilder, and Unreal Engine for further processing. The service can be particularly helpful for importing camera animations longer than 2 minutes into Unreal Engine, which can be a challenge without splitting the animation into smaller parts.</p>
+
+<p><img alt="Preview of trimmer service" src="trimmer_web_test_2.png" /></p>
+
+<p>&nbsp;</p>
+
+<h2>User Guide</h2>
+
+<p>To begin, select a stream *.cgi file. Once the file is successfully read, you will receive information about the number of packets and the start and end timecode of the stream data.</p>
+
+<p>The next step is to define the frame rate of the data and the start and end timecodes of the output fbx animation. Time code is defined in a format "Hours : Minutes : Seconds"</p>
+
+<p>💡 If you leave these values as zeros, the entire duration of the raw stream will be exported.</p>
+
+<p>When you press &quot;Export to FBX,&quot; the trim and conversion operation will be executed, and the output file will be downloaded in your browser.</p>
+
+<p>&nbsp;</p>
+
+<h2>FBX Camera specification</h2>
+
+<h3>Camera transform options</h3>
+
+<p>Rotation Order - ZXY</p>
+
+<p>Post rotation 0; 90; 0 in Euler angles</p>
+
+<h3>Calibrated properties</h3>
+
+<ul>
+	<li><strong>focalLength, focusDistance</strong> - In case of calibrated zoom, the fbx file contains animated focal length and focus distance for the camera</li>
+</ul>
+
+<h3>Custom properties of camera</h3>
+
+<ul>
+	<li><strong>zoom, focus, iris</strong> - camera raw values</li>
+	<li><strong>trackPos</strong> - represents an offset of crane on a track (if track is used)</li>
+	<li><strong>packetNumber</strong> - a stamp of a current packet number where data for a given time was read from</li>
+</ul>
+
+<p>TimeCode is presented in a several properties</p>
+
+<ul>
+	<li><strong>TCHour, TCMinute, TCSecond, TCFrame, TCSubframe</strong> and <strong>TCRate</strong> which represents the output frame rate of the data. The frame rate is a user defined property value.</li>
+</ul>
+
+<h2>&nbsp;</h2>
+
+<h2>Support</h2>
+
+<p>Official Technocrane Website - <a href="https://www.supertechno.com/">https://www.supertechno.com/</a></p>
+
+<p>Github home page for Technocrane - <a href="https://github.com/technocranes">https://github.com/technocranes</a></p>
+
+<p>Discord channel with support groups - <a href="https://discord.com/invite/qw7QxSR">https://discord.com/invite/qw7QxSR</a></p>
+
+<p>Sergei &lt;Neill3d&gt; Solokhin 2023, specially for Technocrane r.s.o.</p>
