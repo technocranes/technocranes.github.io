@@ -135,6 +135,7 @@
         var frameRateValue = frameRateElement.value;
         var startTime = hmsToSecondsOnly(startTimeElement.value);
         var endTime = hmsToSecondsOnly(endTimeElement.value);
+        var doExportBinary = 0; // false;
 
         reader.onload = (event) => {
           const uint8Arr = new Uint8Array(event.target.result);
@@ -142,7 +143,7 @@
           const data_ptr = Module._malloc(num_bytes);
           const data_on_heap = new Uint8Array(Module.HEAPU8.buffer, data_ptr, num_bytes);
           data_on_heap.set(uint8Arr);
-          const res = Module.ccall('TrimAndExportToFBX', 'number', ['number', 'number', 'number', 'number', 'number'], [data_on_heap.byteOffset, uint8Arr.length, frameRateValue, startTime, endTime]);
+          const res = Module.ccall('TrimAndExportToFBX', 'number', ['number', 'number', 'number', 'number', 'number', 'number'], [data_on_heap.byteOffset, uint8Arr.length, frameRateValue, startTime, endTime, doExportBinary]);
           Module._free(data_ptr);
         };
         reader.readAsArrayBuffer(file);
