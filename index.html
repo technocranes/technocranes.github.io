@@ -139,6 +139,8 @@
         var frameRateValue = frameRateElement.value;
         var startTime = hmsToSecondsOnly(startTimeElement.value);
         var endTime = hmsToSecondsOnly(endTimeElement.value);
+        console.log(startTime);
+        console.log(endTime);
         var doExportBinary = 0; // false;
 
         reader.onload = (event) => {
