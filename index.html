@@ -85,7 +85,6 @@
     
     <br/>
     <div/>
-    <input class="coupon_question" type="checkbox" name="log_visibility" value="0" onchange="LogVisibilityChanged()"/>
     <textarea class="emscripten" id="output" rows="8"></textarea>
     <hr>
     <br/>
@@ -120,14 +119,6 @@
           reader.readAsArrayBuffer(file);
           }
       });
-
-      function LogVisibilityChanged()
-      {
-          if($('.log_visibility').is(":checked"))   
-              $(".output").show();
-          else
-              $(".output").hide();
-      }
       
       function hmsToSecondsOnly(str) {
           var p = str.split(':'),
