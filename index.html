@@ -64,6 +64,28 @@
         margin-left:auto;
       }
 
+      .demo-actions {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin: 1em auto 1.25em;
+      }
+
+      .demo-actions a {
+        display: inline-block;
+        border: 1px solid #416680;
+        border-radius: 4px;
+        padding: 0.45em 0.9em;
+        background: #edf7ff;
+        color: #12384f;
+        font-weight: bold;
+        text-decoration: none;
+      }
+
+      .demo-actions a:hover {
+        background: #d9efff;
+      }
+
     </style>
   </head>
   <body>
@@ -72,6 +94,9 @@
     <center style="margin-top:3.5em"><img src="technocrane.png" alt="Technocrane" style="width:535px;height:93px;"></center>
     <br/>
     <center style="margin-top:.5em"><strong>Trim and export your raw *.cgi stream into *.fbx file</strong></center>
+    <div class="demo-actions">
+      <a href="converter/">New Demo</a>
+    </div>
     <figure style="overflow:visible;" id="spinner"><div class="spinner"></div><center style="margin-top:0.5em"><strong>Processing Module</strong></center></figure>
     <div class="emscripten" id="status">Downloading...</div>
     <div class="emscripten">

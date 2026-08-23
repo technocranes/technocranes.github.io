@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Technocrane Data Converter</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --panel: #16191d;
+        --panel-strong: #101216;
+        --border: #2b3037;
+        --text: #e7eaee;
+        --muted: #a4acb6;
+        --accent: #4f9fe8;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: #0c0e11;
+        color: var(--text);
+        font: 13px/1.4 Arial, Helvetica, sans-serif;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        min-height: 42px;
+        padding: 8px 12px;
+        border-bottom: 1px solid var(--border);
+        background: var(--panel);
+      }
+
+      .brand {
+        min-width: 0;
+        font-size: 14px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .status-wrap {
+        display: flex;
+        align-items: center;
+        flex: 1 1 auto;
+        gap: 10px;
+        min-width: 120px;
+        color: var(--muted);
+      }
+
+      #status {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      #progress {
+        width: 180px;
+        height: 8px;
+        accent-color: var(--accent);
+      }
+
+      .spinner {
+        width: 16px;
+        height: 16px;
+        flex: 0 0 auto;
+        border: 2px solid #3c424b;
+        border-top-color: var(--accent);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        white-space: nowrap;
+      }
+
+      .controls a,
+      .controls button {
+        min-height: 26px;
+        border: 1px solid #3b4652;
+        border-radius: 4px;
+        padding: 3px 9px;
+        background: #1d2731;
+        color: var(--text);
+        font: inherit;
+        cursor: pointer;
+        text-decoration: none;
+      }
+
+      .controls a:hover,
+      .controls button:hover {
+        border-color: #5f7488;
+        background: #243240;
+      }
+
+      .canvas-wrap {
+        display: grid;
+        place-items: center;
+        flex: 1 1 auto;
+        min-height: 0;
+        background: var(--panel-strong);
+      }
+
+      canvas.emscripten {
+        display: block;
+        width: 100vw;
+        height: calc(100vh - 42px);
+        border: 0;
+        outline: 0;
+        background: #000;
+      }
+
+      #output {
+        position: absolute;
+        left: -10000px;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+      }
+
+      @media (max-width: 720px) {
+        .topbar {
+          align-items: flex-start;
+          flex-wrap: wrap;
+          min-height: 74px;
+        }
+
+        .status-wrap {
+          order: 3;
+          width: 100%;
+          flex-basis: 100%;
+        }
+
+        canvas.emscripten {
+          height: calc(100vh - 74px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">Technocrane Data Converter</div>
+      <div class="status-wrap">
+        <div class="spinner" id="spinner"></div>
+        <div id="status">Downloading...</div>
+        <progress value="0" max="100" id="progress" hidden></progress>
+      </div>
+      <div class="controls">
+        <a href="user_guide.html" target="_blank" rel="noopener">User Guide</a>
+        <a href="https://www.supertechno.com/" target="_blank" rel="noopener">Technocrane</a>
+        <button type="button" id="fullscreen">Fullscreen</button>
+      </div>
+    </header>
+
+    <main class="canvas-wrap">
+      <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1"></canvas>
+    </main>
+
+    <textarea id="output" rows="8" aria-hidden="true"></textarea>
+
+    <script>
+      var statusElement = document.getElementById('status');
+      var progressElement = document.getElementById('progress');
+      var spinnerElement = document.getElementById('spinner');
+      var fullscreenElement = document.getElementById('fullscreen');
+
+      var Module = {
+        preRun: [],
+        postRun: [],
+        print: (function() {
+          var element = document.getElementById('output');
+          if (element) element.value = '';
+          return function(text) {
+            if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+            console.log(text);
+            if (element) {
+              element.value += text + "\n";
+              element.scrollTop = element.scrollHeight;
+            }
+          };
+        })(),
+        canvas: (function() {
+          var canvas = document.getElementById('canvas');
+          canvas.addEventListener('webglcontextlost', function(event) {
+            alert('WebGL context lost. Reload the page to restart the converter.');
+            event.preventDefault();
+          }, false);
+          return canvas;
+        })(),
+        setStatus: function(text) {
+          if (!Module.setStatus.last) Module.setStatus.last = { time: Date.now(), text: '' };
+          if (text === Module.setStatus.last.text) return;
+
+          var match = text.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/);
+          var now = Date.now();
+          if (match && now - Module.setStatus.last.time < 30) return;
+
+          Module.setStatus.last.time = now;
+          Module.setStatus.last.text = text;
+
+          if (match) {
+            text = match[1].trim();
+            progressElement.value = parseInt(match[2], 10) * 100;
+            progressElement.max = parseInt(match[4], 10) * 100;
+            progressElement.hidden = false;
+            spinnerElement.hidden = false;
+            spinnerElement.style.display = '';
+          } else {
+            progressElement.value = null;
+            progressElement.max = null;
+            progressElement.hidden = true;
+            if (!text) spinnerElement.style.display = 'none';
+          }
+
+          statusElement.textContent = text;
+        },
+        totalDependencies: 0,
+        monitorRunDependencies: function(left) {
+          this.totalDependencies = Math.max(this.totalDependencies, left);
+          Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies - left) + '/' + this.totalDependencies + ')' : 'Ready');
+        }
+      };
+
+      fullscreenElement.addEventListener('click', function() {
+        Module.requestFullscreen(false, true);
+      });
+
+      Module.setStatus('Downloading...');
+      window.onerror = function() {
+        Module.setStatus('Exception thrown, see JavaScript console');
+        spinnerElement.style.display = 'none';
+        Module.setStatus = function(text) {
+          if (text) console.error('[post-exception status] ' + text);
+        };
+      };
+    </script>
+    <script async type="text/javascript" src="data_converter_gui.js"></script>
+  </body>
+</html>
+
+

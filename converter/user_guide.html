@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Technocrane Data Converter - User Guide</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0f1115;
+        --panel: #171b21;
+        --line: #2d3540;
+        --text: #e8ebef;
+        --muted: #abb4bf;
+        --accent: #5aa7ef;
+        --accent-soft: #233549;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font: 15px/1.55 Arial, Helvetica, sans-serif;
+      }
+
+      header {
+        border-bottom: 1px solid var(--line);
+        background: #151920;
+      }
+
+      .bar,
+      main {
+        width: min(1120px, calc(100vw - 32px));
+        margin: 0 auto;
+      }
+
+      .bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        min-height: 52px;
+      }
+
+      .brand {
+        font-weight: 700;
+      }
+
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      a {
+        color: #8fc7ff;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      nav a,
+      .button-link {
+        border: 1px solid #3a4654;
+        border-radius: 4px;
+        padding: 5px 10px;
+        background: #1d2631;
+        color: var(--text);
+      }
+
+      main {
+        display: grid;
+        grid-template-columns: 230px minmax(0, 1fr);
+        gap: 28px;
+        padding: 30px 0 52px;
+      }
+
+      aside {
+        position: sticky;
+        top: 18px;
+        align-self: start;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 14px;
+        background: var(--panel);
+      }
+
+      aside h2 {
+        margin: 0 0 10px;
+        font-size: 13px;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      aside a {
+        display: block;
+        padding: 6px 0;
+      }
+
+      article {
+        min-width: 0;
+      }
+
+      section {
+        margin: 0 0 28px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 20px;
+        background: var(--panel);
+      }
+
+      h1,
+      h2,
+      h3 {
+        line-height: 1.2;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: 32px;
+      }
+
+      h2 {
+        margin: 0 0 14px;
+        font-size: 21px;
+      }
+
+      h3 {
+        margin: 22px 0 8px;
+        font-size: 16px;
+      }
+
+      p {
+        margin: 0 0 12px;
+        color: var(--muted);
+      }
+
+      ul,
+      ol {
+        margin: 0 0 12px 22px;
+        padding: 0;
+        color: var(--muted);
+      }
+
+      li {
+        margin: 5px 0;
+      }
+
+      code {
+        border: 1px solid #354150;
+        border-radius: 4px;
+        padding: 1px 5px;
+        background: #10151b;
+        color: #d8e9ff;
+      }
+
+      .callout {
+        border-left: 3px solid var(--accent);
+        padding: 10px 12px;
+        background: var(--accent-soft);
+        color: var(--text);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .card {
+        border: 1px solid #343e4a;
+        border-radius: 6px;
+        padding: 12px;
+        background: #131820;
+      }
+
+      .card strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      @media (max-width: 820px) {
+        .bar {
+          align-items: flex-start;
+          flex-direction: column;
+          padding: 12px 0;
+        }
+
+        main {
+          grid-template-columns: 1fr;
+        }
+
+        aside {
+          position: static;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="bar">
+        <div class="brand">Technocrane Data Converter User Guide</div>
+        <nav>
+          <a href="data_converter_gui.html">Open App</a>
+          <a href="https://www.supertechno.com/" target="_blank" rel="noopener">Technocrane</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <aside>
+        <h2>Contents</h2>
+        <a href="#overview">Overview</a>
+        <a href="#quick-start">Quick Start</a>
+        <a href="#import-export">Import / Export</a>
+        <a href="#options">Options</a>
+        <a href="#preview">Preview</a>
+        <a href="#timeline">Timeline</a>
+        <a href="#shortcuts">Shortcuts</a>
+        <a href="#inspection">Inspection</a>
+        <a href="#troubleshooting">Troubleshooting</a>
+      </aside>
+
+      <article>
+        <section id="overview">
+          <h1>Technocrane Data Converter</h1>
+          <p>
+            The converter reads Technocrane CGI files and FBX camera animation,
+            shows the motion in a browser-based preview, and exports the result
+            back to CGI or FBX.
+          </p>
+          <p class="callout">
+            The browser version runs fully in the page for file conversion.
+            Files are loaded into the browser session and exported as downloads.
+          </p>
+        </section>
+
+        <section id="quick-start">
+          <h2>Quick Start</h2>
+          <ol>
+            <li>Open the app and use the <strong>Input</strong> row to choose a <code>.cgi</code> or <code>.fbx</code> file.</li>
+            <li>Click <strong>Load</strong> to import the source and update the preview, timeline, and inspector.</li>
+            <li>Use the <strong>Output</strong> row to choose an output file name.</li>
+            <li>Review the options that apply to your export.</li>
+            <li>Click <strong>Export</strong>. In the browser build, the output file downloads automatically.</li>
+          </ol>
+        </section>
+
+        <section id="import-export">
+          <h2>Import / Export Panel</h2>
+          <div class="grid">
+            <div class="card">
+              <strong>Input</strong>
+              <p>Select the source file. Supported inputs are <code>.cgi</code> and <code>.fbx</code>.</p>
+            </div>
+            <div class="card">
+              <strong>Load</strong>
+              <p>Imports the selected source into the app without writing a new file.</p>
+            </div>
+            <div class="card">
+              <strong>Output</strong>
+              <p>Sets the target file name. Use <code>.fbx</code> for FBX export or <code>.cgi</code> for CGI export.</p>
+            </div>
+            <div class="card">
+              <strong>Export</strong>
+              <p>Writes the converted data using the selected output path and options.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="options">
+          <h2>Options</h2>
+          <h3>Common Options</h3>
+          <p>
+            <strong>Use custom frame rate</strong> controls the rate used when
+            importing CGI data that needs an explicit frame rate.
+          </p>
+
+          <h3>FBX Options</h3>
+          <ul>
+            <li><strong>Resample</strong> affects FBX input only. Use <code>0</code> to auto-detect the resample rate.</li>
+            <li><strong>Relative time</strong> exports keys starting at time zero while preserving timecode metadata.</li>
+            <li><strong>Euler filter</strong> reduces rotation discontinuities during FBX export.</li>
+            <li><strong>ASCII / Binary</strong> selects the FBX output encoding.</li>
+            <li><strong>Camera name</strong>, <strong>Animation name</strong>, and <strong>Comment</strong> set FBX metadata.</li>
+          </ul>
+
+          <h3>Camera Lens</h3>
+          <p>
+            Enable calibrated FOV output when converting Technocrane zoom values
+            into FBX camera field-of-view data. Chip width and height are in
+            millimeters.
+          </p>
+        </section>
+
+        <section id="preview">
+          <h2>Preview</h2>
+          <p>
+            The Preview tab shows the imported camera trajectory, a current
+            camera marker, frustum, grid, and crane model. Use the mouse to
+            orbit, pan, and zoom the view.
+          </p>
+          <p>
+            The Crane Preview tab controls whether the crane, scene grid, and
+            textured floor are visible.
+          </p>
+        </section>
+
+        <section id="timeline">
+          <h2>Timeline</h2>
+          <ul>
+            <li><strong>Play</strong> starts or stops playback.</li>
+            <li><strong>|&lt;</strong> and <strong>&gt;|</strong> jump to the selected playback range.</li>
+            <li><strong>&lt;</strong> and <strong>&gt;</strong> step one imported sample at a time.</li>
+            <li><strong>[=T</strong> and <strong>T=]</strong> set the playback range start or end to the current time.</li>
+            <li><strong>Timecode</strong> switches the current-time field between seconds and timecode display.</li>
+          </ul>
+        </section>
+
+        <section id="shortcuts">
+          <h2>Keyboard Shortcuts</h2>
+          <div class="grid">
+            <div class="card">
+              <strong><code>Space</code></strong>
+              <p>Play or stop timeline playback.</p>
+            </div>
+            <div class="card">
+              <strong><code>Left Arrow</code> / <code>Right Arrow</code></strong>
+              <p>Step to the previous or next imported sample.</p>
+            </div>
+            <div class="card">
+              <strong><code>Home</code></strong>
+              <p>Jump to the selected playback range start.</p>
+            </div>
+            <div class="card">
+              <strong><code>End</code></strong>
+              <p>Jump to the selected playback range end.</p>
+            </div>
+            <div class="card">
+              <strong><code>F</code></strong>
+              <p>Frame the visible FCurve Editor channels when the curve editor is focused or hovered.</p>
+            </div>
+          </div>
+
+          <h3>Mouse Controls</h3>
+          <ul>
+            <li><strong>Preview right-drag</strong>: orbit the 3D view.</li>
+            <li><strong>Preview middle-drag</strong>: pan the 3D view.</li>
+            <li><strong>Preview wheel</strong>: zoom the 3D view.</li>
+            <li><strong>FCurve left-click</strong>: select the nearest visible key.</li>
+            <li><strong>FCurve left-drag</strong>: rectangle-select keys.</li>
+            <li><strong>FCurve middle-drag</strong>: pan the curve view.</li>
+            <li><strong>FCurve right-drag</strong>: zoom the curve view.</li>
+          </ul>
+        </section>
+
+        <section id="inspection">
+          <h2>Inspection And Logs</h2>
+          <p>
+            Scene Inspector summarizes the loaded source and current frame.
+            Snapshot stores a temporary comparison copy of the current import.
+            Log records import, export, validation, and preview messages.
+          </p>
+        </section>
+
+        <section id="troubleshooting">
+          <h2>Troubleshooting</h2>
+          <ul>
+            <li>If no file downloads, check the Log tab for validation or export errors.</li>
+            <li>If the preview is empty, load a source file first and confirm it contains camera samples.</li>
+            <li>If browser memory runs out, try a smaller source file or use the desktop build.</li>
+            <li>If a changed web build does not appear, hard-refresh the browser page.</li>
+          </ul>
+          <p>
+            For local development, build with <code>data_converter_gui\scripts\build-web.ps1</code>
+            and serve with <code>data_converter_gui\scripts\serve-web.ps1</code>.
+          </p>
+        </section>
+      </article>
+    </main>
+  </body>
+</html>
